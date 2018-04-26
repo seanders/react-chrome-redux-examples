@@ -14,18 +14,30 @@ class App extends Component {
     });
   }
 
+  onInputChange(evt) {
+    console.log('dispatching on input change event', evt.target.value)
+    this.props.dispatch({
+      type: 'INPUT_CHANGE',
+      value: evt.target.value || '',
+    });
+  }
+
   render() {
     return (
       <div>
         Count: {this.props.count}
+        {/* `value` is undefined even though `store.getState().input` in the background page says its `""`. Not sure what thats about*/}
+        <input type='text' value={this.props.value || ''} onChange={this.onInputChange.bind(this)} />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
+  console.log('mapStateToProps', state);
   return {
-    count: state.count
+    count: state.count,
+    value: state.input
   };
 };
 

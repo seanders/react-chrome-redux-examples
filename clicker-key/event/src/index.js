@@ -5,6 +5,8 @@ import {wrapStore} from 'react-chrome-redux';
 
 const store = createStore(rootReducer, {});
 
+window.store = store;
+
 wrapStore(store, {
   portName: 'example'
 });
