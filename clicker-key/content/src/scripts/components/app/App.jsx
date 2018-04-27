@@ -1,6 +1,40 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+class Input extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: ''
+    }
+  }
+
+  isFocused() {
+    return document.activeElement === this.inputNode;
+  }
+
+  handleChange(evt) {
+    if (this.isFocused()) {
+      console.log('im focused and setting state')
+      this.setState({
+        value: evt.target.value
+      })
+      this.props.onChange(evt);
+    }
+  }
+
+  render() {
+    return (
+      <input
+        type='text'
+        ref={node => { this.inputNode = node }}
+        onChange={this.handleChange.bind(this)}
+        value={this.isFocused() ? this.state.value : this.props.value} />
+    );
+  }
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +61,7 @@ class App extends Component {
       <div>
         Count: {this.props.count}
         {/* `value` is undefined even though `store.getState().input` in the background page says its `""`. Not sure what thats about*/}
-        <input type='text' value={this.props.value || ''} onChange={this.onInputChange.bind(this)} />
+        <Input type='text' value={this.props.value || ''} onChange={this.onInputChange.bind(this)} />
       </div>
     );
   }
